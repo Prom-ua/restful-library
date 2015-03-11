@@ -1,5 +1,6 @@
 from flask import Flask
 from flask.ext import restful
+from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -9,6 +10,8 @@ app.config.from_object('config')
 api = restful.Api(app)
 
 db = SQLAlchemy(app)
+
+login_manager = LoginManager(app)
 
 
 import restful_library.models
