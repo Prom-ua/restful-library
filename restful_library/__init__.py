@@ -12,9 +12,12 @@ api = restful.Api(app)
 db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Пожалуйста, войдите, чтобы получить доступ к этой странице.'
+login_manager.login_message_category = 'info'
 
 
-import restful_library.models
+from restful_library import models, views
 
 
 from restful_library.resources.book import (

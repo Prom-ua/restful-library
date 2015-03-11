@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from uuid import uuid4
 
 from flask.ext.login import UserMixin
@@ -10,13 +10,13 @@ from restful_library import db
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(
+    email = db.Column(
         db.String(120),
         unique=True,
         index=True,
         nullable=False,
     )
-    password = db.Column(db.String(64))
+    password = db.Column(db.String(80))
 
     def __init__(self, email=None, password=None):
         self.email = email
@@ -30,23 +30,30 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password, password)
 
     def __repr__(self):
-        return u'<User %r>' % (self.email)
+        return '<User %r>' % (self.email)
 
-    def __unicode__(self):
-        return u'%s' % (self.email)
+    def __str__(self):
+        return self.email
 
 
 class ApiToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(UUID)
+    uuid = db.Column(UUID(as_uuid=True))
     date_created = db.Column(db.DateTime, default=datetime.now)
-    date_expires = db.Column(db.DateTime)
+    date_expiry = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=lambda: datetime.now() + timedelta(30),
+    )
 
     def __init__(self):
-        self.uuid = str(uuid4())
+        self.uuid = uuid4()
+
+    def is_not_expired(self):
+        return self.date_expiry > datetime.now()
 
     def __repr__(self):
         return '<ApiToken %r>' % (self.uuid)
 
-    def __unicode__(self):
-        return '%s' % (self.uuid)
+    def __str__(self):
+        return self.uuid
