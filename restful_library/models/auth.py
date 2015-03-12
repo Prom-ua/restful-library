@@ -45,9 +45,14 @@ class ApiToken(db.Model):
         nullable=False,
         default=lambda: datetime.now() + timedelta(30),
     )
+    created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_by = db.relationship('User', backref='created_tokens')
+    description = db.Column(db.String(300))
 
-    def __init__(self):
+    def __init__(self, date_expiry=None):
         self.uuid = uuid4()
+        if date_expiry is not None:
+            self.date_expiry = date_expiry
 
     def is_not_expired(self):
         return self.date_expiry > datetime.now()

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Создание API Token{% endblock title %}
+
+
+{% block body %}
+    {% import 'macro/forms.html' as macro_forms %}
+    <form role="form" method="post" action="">
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {{ macro_forms.form_field(field, with_label=True) }}
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success">Создать</button>
+        {% if delete_url %}
+            <a href="{{ delete_url }}" class="btn btn-danger pull-right">Удалить</a>  
+        {% endif %}
+    </form>
+{% endblock body %}

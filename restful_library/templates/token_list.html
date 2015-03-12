@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}API Tokens{% endblock title %}
+
+{% block body %}
+    <div class="row">
+        <div class="container">
+            <a href="{{ url_for('token_add') }}" class="btn btn-success pull-right clearfix">Создать ключ</a>
+        </div>
+    </div>
+    {% if tokens %}
+        <table class="table">
+            <th>id</th>
+            <th>Ключ</th>
+            <th>Описание</th>
+            <th>Создан</th>
+            <th>Действителен до</th>
+            {% for token in tokens %}
+                <tr>
+                    <td>{{ token.id }}</td>
+                    <td>{{ token.uuid }}</td>
+                    <td>{{ token.description or '' }}</td>
+                    <td>{{ token.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ token.date_expiry.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock body %}

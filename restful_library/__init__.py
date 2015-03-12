@@ -7,7 +7,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config.from_object('config')
 
-api = restful.Api(app)
+api = restful.Api(app, prefix='/api/v1')
 
 db = SQLAlchemy(app)
 
@@ -26,16 +26,16 @@ from restful_library.resources.book import (
     BookAuthorsListResource,
     BooksAuthorsResource,
 )
-api.add_resource(BookListResource, '/books/')
-api.add_resource(BookResource, '/books/<book_id>/')
+api.add_resource(BookListResource, '/books')
+api.add_resource(BookResource, '/books/<book_id>')
 api.add_resource(
     BookAuthorsListResource,
-    '/books/<id>/authors/',
+    '/books/<id>/authors',
     endpoint='book_authors_list',
 )
 api.add_resource(
     BooksAuthorsResource,
-    '/books/<book_id>/authors/<author_id>/',
+    '/books/<book_id>/authors/<author_id>',
     endpoint='book_authors',
 )
 
@@ -46,15 +46,15 @@ from restful_library.resources.author import (
     AuthorBooksListResource,
     AuthorBooksResource,
 )
-api.add_resource(AuthorListResource, '/authors/')
-api.add_resource(AuthorResource, '/authors/<author_id>/')
+api.add_resource(AuthorListResource, '/authors')
+api.add_resource(AuthorResource, '/authors/<author_id>')
 api.add_resource(
     AuthorBooksListResource,
-    '/authors/<id>/books/',
+    '/authors/<id>/books',
     endpoint='author_books_list',
 )
 api.add_resource(
     AuthorBooksResource,
-    '/authors/<author_id>/books/<book_id>/',
+    '/authors/<author_id>/books/<book_id>',
     endpoint='author_books',
 )
