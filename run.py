@@ -1,5 +1,6 @@
 from restful_library import app, db
 
 
-db.create_all()
-app.run()
+if __name__ == '__main__':
+    db.create_all()
+    app.run()
