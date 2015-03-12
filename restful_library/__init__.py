@@ -1,6 +1,8 @@
 from flask import Flask
 from flask.ext import restful
 from flask.ext.login import LoginManager
+from flask.ext.migrate import Migrate
+from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -10,6 +12,9 @@ app.config.from_object('config')
 api = restful.Api(app, prefix='/api/v1')
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
