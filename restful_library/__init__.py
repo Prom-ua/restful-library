@@ -4,12 +4,18 @@ from flask.ext.login import LoginManager
 from flask.ext.migrate import Migrate
 from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask_restful_swagger import swagger
 
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-api = restful.Api(app, prefix='/api/v1')
+api = swagger.docs(
+    restful.Api(app),
+    apiVersion='0.1',
+    api_spec_url='/spec',
+)
+api_prefix_url = '/api/v1'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -31,16 +37,21 @@ from restful_library.resources.book import (
     BookAuthorsListResource,
     BooksAuthorsResource,
 )
-api.add_resource(BookListResource, '/books')
-api.add_resource(BookResource, '/books/<book_id>')
+
+
+# Temporary solution to add prefix due to bug in Flask-Restful-Swagger
+# with static html content (spec.html)
+
+api.add_resource(BookListResource, api_prefix_url + '/books')
+api.add_resource(BookResource, api_prefix_url + '/books/<int:book_id>')
 api.add_resource(
     BookAuthorsListResource,
-    '/books/<id>/authors',
+    api_prefix_url + '/books/<int:id>/authors',
     endpoint='book_authors_list',
 )
 api.add_resource(
     BooksAuthorsResource,
-    '/books/<book_id>/authors/<author_id>',
+    api_prefix_url + '/books/<int:book_id>/authors/<int:author_id>',
     endpoint='book_authors',
 )
 
@@ -51,15 +62,15 @@ from restful_library.resources.author import (
     AuthorBooksListResource,
     AuthorBooksResource,
 )
-api.add_resource(AuthorListResource, '/authors')
-api.add_resource(AuthorResource, '/authors/<author_id>')
+api.add_resource(AuthorListResource, api_prefix_url + '/authors')
+api.add_resource(AuthorResource, api_prefix_url + '/authors/<int:author_id>')
 api.add_resource(
     AuthorBooksListResource,
-    '/authors/<id>/books',
+    api_prefix_url + '/authors/<int:id>/books',
     endpoint='author_books_list',
 )
 api.add_resource(
     AuthorBooksResource,
-    '/authors/<author_id>/books/<book_id>',
+    api_prefix_url + '/authors/<int:author_id>/books/<int:book_id>',
     endpoint='author_books',
 )

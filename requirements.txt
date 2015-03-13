@@ -13,6 +13,7 @@ WTForms==2.0.2
 Werkzeug==0.10.1
 alembic==0.7.4
 aniso8601==0.92
+flask-restful-swagger==0.16
 gnureadline==6.3.3
 gunicorn==19.3.0
 ipython==3.0.0
