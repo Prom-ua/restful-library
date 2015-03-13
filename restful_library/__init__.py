@@ -12,7 +12,12 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 api = swagger.docs(
-    restful.Api(app, decorators=[cors.crossdomain(origin='*')]),
+    restful.Api(
+        app,
+        decorators=[
+            cors.crossdomain(origin='*', headers='Authorization'),
+        ],
+    ),
     apiVersion='0.1',
     api_spec_url='/spec',
 )
