@@ -26,7 +26,7 @@ def before_request():
 @app.route('/')
 @login_required
 def main():
-    return render_template('base.html')
+    return render_template('api_documentation.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

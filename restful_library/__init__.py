@@ -2,6 +2,7 @@ from flask import Flask
 from flask.ext import restful
 from flask.ext.login import LoginManager
 from flask.ext.migrate import Migrate
+from flask.ext.restful.utils import cors
 from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_restful_swagger import swagger
@@ -11,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 api = swagger.docs(
-    restful.Api(app),
+    restful.Api(app, decorators=[cors.crossdomain(origin='*')]),
     apiVersion='0.1',
     api_spec_url='/spec',
 )
