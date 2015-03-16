@@ -2,22 +2,26 @@ from flask import Flask
 from flask.ext import restful
 from flask.ext.login import LoginManager
 from flask.ext.migrate import Migrate
-from flask.ext.restful.utils import cors
 from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_restful_swagger import swagger
 
 
 app = Flask(__name__)
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
+
 app.config.from_object('config')
 
 api = swagger.docs(
-    restful.Api(
-        app,
-        decorators=[
-            cors.crossdomain(origin='*', headers='Authorization'),
-        ],
-    ),
+    restful.Api(app),
     apiVersion='0.1',
     api_spec_url='/spec',
 )
