@@ -7,15 +7,17 @@
         <pre>
             <code>
                 $.ajax({
-                    url: 'api/v1/books',
-                    dataType : 'jsonp',
+                    url: 'http://restful-library.herokuapp.com/api/v1/books',
+                    type: 'POST',
+                    data: {'title': 'testBook'},
+                    dataType: 'json',
                     beforeSend : function(xhr) {
-                        var api_key = "my-api-key";
-                        var base64 = btoa(api_key);
+                        var api_key = 'your_api_key';  // Your API key
+                        var base64 = btoa(api_key + ":");
                         xhr.setRequestHeader("Authorization", "Basic " + base64);
                     },
                     error : function() {
-                      // error handler
+                        // error handler
                     },
                     success: function(data) {
                         console.log(data);
